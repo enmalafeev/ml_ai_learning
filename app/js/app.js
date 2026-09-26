@@ -33,6 +33,7 @@
     }
     view.innerHTML = html;
     updateTabs();
+    updateSyncButton();
     updateMinibar();
     window.scrollTo(0, scroll);
   }
@@ -203,6 +204,13 @@
       render(true);
     } else if (action === 'export') {
       exportBackup();
+    } else if (action === 'sync-run') {
+      runSync(btn);
+    } else if (action === 'sync-forget') {
+      if (confirm('Забыть токен и id гиста? Сам gist на GitHub останется.')) {
+        Sync.forget();
+        render(true);
+      }
     } else if (action === 'reset') {
       if (confirm('Удалить весь прогресс? Это действие нельзя отменить.')) {
         Store.reset();
@@ -271,6 +279,51 @@
       Store.commit();
     }, 500);
   });
+
+  /* --- Синхронизация --- */
+
+  // Сообщение либо в строку статуса на экране настроек, либо всплывашкой, если её нет
+  function syncStatus(text) {
+    const el = document.querySelector('[data-sync-status]');
+    if (el) el.textContent = text;
+    else notify('Синхронизация', text);
+  }
+
+  function runSync(btn) {
+    const tokenEl = document.getElementById('sync-token');
+    const gistEl = document.getElementById('sync-gist');
+    const patch = {};
+    if (tokenEl && tokenEl.value.trim()) patch.token = tokenEl.value.trim();
+    if (gistEl) patch.gistId = gistEl.value.trim();
+    Sync.setConfig(patch);
+
+    if (!Sync.isConfigured()) {
+      syncStatus('Нужен токен GitHub с правом gist.');
+      return;
+    }
+
+    // У кнопки в шапке подпись — это svg, её текст трогать нельзя
+    const isIcon = !!btn.querySelector('svg');
+    const label = btn.textContent;
+    btn.disabled = true;
+    if (!isIcon) btn.textContent = 'Синхронизация…';
+    const statusEl = document.querySelector('[data-sync-status]');
+    if (statusEl) statusEl.textContent = 'Обмен с GitHub…';
+
+    Sync.run().then(function () {
+      render(true);
+      syncStatus('Готово — прогресс слит и выгружен.');
+    }).catch(function (err) {
+      btn.disabled = false;
+      if (!isIcon) btn.textContent = label;
+      syncStatus(err.message);
+    });
+  }
+
+  function updateSyncButton() {
+    const b = document.getElementById('sync-btn');
+    if (b) b.hidden = !Sync.isConfigured();
+  }
 
   function exportBackup() {
     const data = Store.exportJSON();

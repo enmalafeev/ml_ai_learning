@@ -557,6 +557,16 @@
 
   /* --- Настройки --- */
 
+  function fmtWhen(ts) {
+    try {
+      return new Date(ts).toLocaleString('ru-RU', {
+        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+      });
+    } catch (e) {
+      return '—';
+    }
+  }
+
   function settings() {
     const st = Store.getState().settings;
     let h = '<h1>Настройки</h1>';
@@ -579,6 +589,27 @@
     h += '<p class="small muted">Прогресс хранится только в этом браузере. Очистка данных сайта его удалит — делай копию хотя бы раз в месяц.</p>';
     h += '<div class="btn-row"><button class="btn sm" data-action="export">Скачать копию</button>';
     h += '<label class="btn sm" style="cursor:pointer">Загрузить копию<input type="file" accept="application/json" id="import-file" hidden></label></div>';
+    h += '</div>';
+
+    const sc = Sync.config();
+    h += '<div class="card"><h3>Синхронизация между устройствами</h3>';
+    h += '<p class="small muted">Прогресс кладётся в secret gist на GitHub. Нажми «Синхронизировать» здесь, ' +
+      'потом на другом устройстве — состояния сольются: время и результаты тестов берутся по максимуму, ' +
+      'отметки чек-листов и статей объединяются. Порядок устройств не важен.</p>';
+    h += '<label class="small muted" for="sync-token">Токен GitHub (classic, право gist)</label>';
+    h += '<input class="input" type="password" id="sync-token" autocomplete="off" placeholder="' +
+      (sc.token ? 'сохранён — оставь пустым, чтобы не менять' : 'ghp_…') + '">';
+    h += '<label class="small muted" for="sync-gist" style="display:block;margin-top:10px">Id гиста (на втором устройстве вставь этот же)</label>';
+    h += '<input class="input" type="text" id="sync-gist" autocomplete="off" spellcheck="false" ' +
+      'placeholder="пусто — создадим новый" value="' + esc(sc.gistId) + '">';
+    h += '<div class="btn-row"><button class="btn sm primary" data-action="sync-run">Синхронизировать</button>';
+    if (sc.token) h += '<button class="btn sm" data-action="sync-forget">Забыть токен</button>';
+    h += '</div>';
+    h += '<p class="small muted" data-sync-status style="margin-bottom:0">' +
+      (sc.lastSyncAt ? 'Последняя синхронизация: ' + esc(fmtWhen(sc.lastSyncAt)) : 'Ещё не синхронизировано.') + '</p>';
+    h += '<p class="tiny faint" style="margin-bottom:0">Токен хранится только в этом браузере и не попадает в резервную копию. ' +
+      'Право gist даёт доступ ко всем гистам аккаунта, а secret gist видит любой, кто знает ссылку — ' +
+      'если это не подходит, переноси прогресс файлом копии.</p>';
     h += '</div>';
 
     h += '<div class="card"><h3>Сброс</h3>';

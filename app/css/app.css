@@ -110,6 +110,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   width: 34px; height: 34px; display: grid; place-items: center; color: var(--text-dim);
 }
 .iconbtn:hover { background: var(--surface-2); color: var(--text); }
+.iconbtn[hidden] { display: none; }
 
 main { max-width: var(--maxw); margin: 0 auto; padding: 18px 16px 110px; }
 
@@ -291,6 +292,13 @@ textarea {
   font: inherit; font-size: 14.5px; resize: vertical;
 }
 textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+.input {
+  width: 100%; padding: 9px 12px; margin-top: 4px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+  font: inherit; font-size: 14.5px;
+}
+.input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
 
 .locked-note {
   border: 1px dashed var(--border-strong); border-radius: var(--radius);

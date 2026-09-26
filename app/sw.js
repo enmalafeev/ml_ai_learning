@@ -1,7 +1,7 @@
 /* Service worker: кэш приложения для работы офлайн.
    При изменении файлов приложения поднимай CACHE_VERSION — иначе браузер отдаст старую копию. */
 
-const CACHE_VERSION = 'ml-journey-v1';
+const CACHE_VERSION = 'ml-journey-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -14,6 +14,7 @@ const ASSETS = [
   './js/curriculum.js',
   './js/store.js',
   './js/progress.js',
+  './js/sync.js',
   './js/views.js',
   './js/app.js',
   './icons/icon-192.png',
