@@ -1,7 +1,7 @@
 /* Service worker: кэш приложения для работы офлайн.
    При изменении файлов приложения поднимай CACHE_VERSION — иначе браузер отдаст старую копию. */
 
-const CACHE_VERSION = 'ml-journey-v2';
+const CACHE_VERSION = 'ml-journey-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -25,7 +25,13 @@ const ASSETS = [
 self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then(function (cache) { return cache.addAll(ASSETS); })
+      .then(function (cache) {
+        // cache: 'reload' обязателен: иначе addAll берёт файлы из HTTP-кэша браузера
+        // и в новый кэш попадают старые копии — поднятый CACHE_VERSION ничего не меняет
+        return cache.addAll(ASSETS.map(function (url) {
+          return new Request(url, { cache: 'reload' });
+        }));
+      })
       .then(function () { return self.skipWaiting(); })
   );
 });
