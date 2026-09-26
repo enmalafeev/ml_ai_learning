@@ -602,7 +602,7 @@
     h += '<label class="small muted" for="sync-gist" style="display:block;margin-top:10px">Id гиста (на втором устройстве вставь этот же)</label>';
     h += '<input class="input" type="text" id="sync-gist" autocomplete="off" spellcheck="false" ' +
       'placeholder="пусто — создадим новый" value="' + esc(sc.gistId) + '">';
-    h += '<div class="btn-row"><button class="btn sm primary" data-action="sync-run">Синхронизировать</button>';
+    h += '<div class="btn-row" style="margin-top:12px"><button class="btn sm primary" data-action="sync-run">Синхронизировать</button>';
     if (sc.token) h += '<button class="btn sm" data-action="sync-forget">Забыть токен</button>';
     h += '</div>';
     h += '<p class="small muted" data-sync-status style="margin-bottom:0">' +
