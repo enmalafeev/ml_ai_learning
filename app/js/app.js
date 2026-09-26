@@ -271,6 +271,18 @@
 
   document.addEventListener('input', function (e) {
     const el = e.target;
+
+    // Сохраняем сразу: возврат в приложение перерисовывает экран, и несохранённое
+    // содержимое полей пропало бы — на телефоне это происходит при любом переключении
+    if (el.id === 'sync-token') {
+      Sync.setConfig({ token: el.value.trim() });
+      return;
+    }
+    if (el.id === 'sync-gist') {
+      Sync.setConfig({ gistId: el.value.trim() });
+      return;
+    }
+
     if (el.dataset.notes === undefined) return;
     clearTimeout(notesTimer);
     notesTimer = setTimeout(function () {
@@ -293,7 +305,7 @@
     const tokenEl = document.getElementById('sync-token');
     const gistEl = document.getElementById('sync-gist');
     const patch = {};
-    if (tokenEl && tokenEl.value.trim()) patch.token = tokenEl.value.trim();
+    if (tokenEl) patch.token = tokenEl.value.trim();
     if (gistEl) patch.gistId = gistEl.value.trim();
     Sync.setConfig(patch);
 

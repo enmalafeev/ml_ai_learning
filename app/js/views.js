@@ -597,8 +597,8 @@
       'потом на другом устройстве — состояния сольются: время и результаты тестов берутся по максимуму, ' +
       'отметки чек-листов и статей объединяются. Порядок устройств не важен.</p>';
     h += '<label class="small muted" for="sync-token">Токен GitHub (classic, право gist)</label>';
-    h += '<input class="input" type="password" id="sync-token" autocomplete="off" placeholder="' +
-      (sc.token ? 'сохранён — оставь пустым, чтобы не менять' : 'ghp_…') + '">';
+    h += '<input class="input" type="password" id="sync-token" autocomplete="off" placeholder="ghp_…" ' +
+      'value="' + esc(sc.token) + '">';
     h += '<label class="small muted" for="sync-gist" style="display:block;margin-top:10px">Id гиста (на втором устройстве вставь этот же)</label>';
     h += '<input class="input" type="text" id="sync-gist" autocomplete="off" spellcheck="false" ' +
       'placeholder="пусто — создадим новый" value="' + esc(sc.gistId) + '">';
