@@ -602,10 +602,10 @@
     h += '<label class="small muted" for="sync-gist" style="display:block;margin-top:10px">Id гиста (на втором устройстве вставь этот же)</label>';
     h += '<input class="input" type="text" id="sync-gist" autocomplete="off" spellcheck="false" ' +
       'placeholder="пусто — создадим новый" value="' + esc(sc.gistId) + '">';
-    h += '<div class="btn-row" style="margin-top:12px"><button class="btn sm primary" data-action="sync-run">Синхронизировать</button>';
+    h += '<div class="btn-row" style="margin:12px 0 10px"><button class="btn sm primary" data-action="sync-run">Синхронизировать</button>';
     if (sc.token) h += '<button class="btn sm" data-action="sync-forget">Забыть токен</button>';
     h += '</div>';
-    h += '<p class="small muted" data-sync-status style="margin-bottom:0">' +
+    h += '<p class="small muted" data-sync-status style="margin-bottom:6px">' +
       (sc.lastSyncAt ? 'Последняя синхронизация: ' + esc(fmtWhen(sc.lastSyncAt)) : 'Ещё не синхронизировано.') + '</p>';
     h += '<p class="tiny faint" style="margin-bottom:0">Токен хранится только в этом браузере и не попадает в резервную копию. ' +
       'Право gist даёт доступ ко всем гистам аккаунта, а secret gist видит любой, кто знает ссылку — ' +
