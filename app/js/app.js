@@ -305,9 +305,12 @@
     const tokenEl = document.getElementById('sync-token');
     const gistEl = document.getElementById('sync-gist');
     const patch = {};
-    if (tokenEl) patch.token = tokenEl.value.trim();
-    if (gistEl) patch.gistId = gistEl.value.trim();
-    Sync.setConfig(patch);
+    // Пустое поле не затирает сохранённое: поле может быть пустым не по воле пользователя —
+    // во второй вкладке, открытой до ввода токена, или на старой версии из кэша.
+    // Осознанная очистка уже сохранена обработчиком input, а стереть всё — «Забыть токен».
+    if (tokenEl && tokenEl.value.trim()) patch.token = tokenEl.value.trim();
+    if (gistEl && gistEl.value.trim()) patch.gistId = gistEl.value.trim();
+    if (patch.token || patch.gistId) Sync.setConfig(patch);
 
     if (!Sync.isConfigured()) {
       syncStatus('Нужен токен GitHub с правом gist.');
